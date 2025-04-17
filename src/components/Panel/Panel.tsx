@@ -14,6 +14,11 @@ const Panel = () => {
         className="p-2 hover:bg-gray-100 rounded transition"
         aria-label="Action A"
       >🔲</button>
+             <button
+        onClick={handleIconCClick}
+        className="p-2 hover:bg-gray-100 rounded transition"
+        aria-label="Action C"
+      >🎯</button>
       <button
         onClick={handleIconBClick}
         className="p-2 hover:bg-gray-100 rounded transition" 
@@ -34,16 +39,18 @@ const Panel = () => {
         className="p-2 hover:bg-gray-100 rounded transition"
         aria-label="Action C"
       >⏳</button>
-      <button
-        onClick={handleIconCClick}
-        className="p-2 hover:bg-gray-100 rounded transition"
-        aria-label="Action C"
-      >🗑️</button>
+
+
             <button
         onClick={handleIconCClick}
         className="p-2 hover:bg-gray-100 rounded transition"
         aria-label="Action C"
       >🌏</button>
+      <button
+        onClick={handleIconCClick}
+        className="p-2 hover:bg-gray-100 rounded transition"
+        aria-label="Action C"
+      >🗑️</button>
     </div>
   );
 };

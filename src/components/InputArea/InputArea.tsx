@@ -1,6 +1,6 @@
 import './InputArea.css';
-import WordCount from './WordCount';
-import Timer from './Timer';
+import Timer from '../Timer/Timer';
+import WordCount from '../WordCount/WordCount';
 
 const InputArea = ()=>{
     return (

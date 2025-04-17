@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
-import Panel from './Panel';
-import InputArea from './InputArea';
+import Panel from '../components/Panel/Panel';
+import InputArea from '../components/InputArea/InputArea';
 
 function App() {
   return (
