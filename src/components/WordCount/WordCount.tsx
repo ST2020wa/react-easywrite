@@ -1,8 +1,13 @@
+import { count } from 'console';
 import './WordCount.css';
 
-const WordCount = () => {
+interface WordCountProps {
+  count: number;
+}
+
+const WordCount = ({count}: WordCountProps) => {
     return (
-      <div className='word-count'>??? Word</div>
+      <div className='word-count'>{count} Words</div>
     );
   };
 
