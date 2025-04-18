@@ -2,11 +2,11 @@ import './InputArea.css';
 import Timer from '../Timer/Timer';
 import WordCount from '../WordCount/WordCount';
 
-const InputArea = ()=>{
+const InputArea = ({showWordCount}:any) => {
     return (
         <div className='inputarea-container'>
-            <textarea placeholder="Enter your text here" className="inputarea" />
-            <WordCount />
+            <textarea placeholder="Go for a write." className="inputarea" />
+            {showWordCount && <WordCount/>}
         </div>
     );
 }

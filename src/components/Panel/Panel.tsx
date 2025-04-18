@@ -1,7 +1,12 @@
 import React from 'react';
 import './Panel.css';
 
-const Panel=() => {
+//Define the props interface
+interface PanelProps {
+  wordcountToggle: () => void;
+}
+
+const Panel:React.FC<PanelProps> = ({wordcountToggle}) => {
   const fullscreenToggle = () => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen()
@@ -10,7 +15,6 @@ const Panel=() => {
       document.exitFullscreen();
     }
   };
-  const wordcountToggle = () => {};
   const handleIconBClick = () => console.log('Icon B clicked'); 
   const handleIconCClick = () => console.log('Icon C clicked');
 

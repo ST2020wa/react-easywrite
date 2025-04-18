@@ -16,4 +16,18 @@
       border-color: #9b9b9b;
     }
   }
+
+  .inputarea {
+    width: 100%;
+    flex: 1;
+    padding: 1rem 0 1rem 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    line-height: 1.5;
+    resize: none;
+    outline: none;
+    font-family: Palatino;
+    font-weight: 500;
+  }
 }

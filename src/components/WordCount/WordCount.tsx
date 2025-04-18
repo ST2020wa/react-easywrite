@@ -1,6 +1,6 @@
 import './WordCount.css';
 
-const WordCount: React.FC = () => {
+const WordCount = () => {
     return (
       <div className='word-count'>??? Word</div>
     );

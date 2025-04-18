@@ -5,10 +5,15 @@ import InputArea from '../components/InputArea/InputArea';
 import WordCount from '../components/WordCount/WordCount';
 
 const App = () => {
+  const [showWordCount, setShowWordCount]=useState(true);
+  const wordcountToggle = () => {
+    setShowWordCount(prev => !prev);
+  }
+
   return (
     <div className="App">
-      <Panel />
-      <InputArea />
+      <Panel wordcountToggle={wordcountToggle} />
+      <InputArea showWordCount={showWordCount}/>
     </div>
   );
 };
