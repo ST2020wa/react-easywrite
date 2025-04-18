@@ -1,56 +1,69 @@
 import React from 'react';
 import './Panel.css';
 
-const Panel = () => {
-  // Click handlers for each icon
-  const handleIconAClick = () => console.log('Icon A clicked');
+const Panel=() => {
+  const fullscreenToggle = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen()
+        .catch(err => console.error('Fullscreen error:', err));
+    } else {
+      document.exitFullscreen();
+    }
+  };
+  const wordcountToggle = () => {};
   const handleIconBClick = () => console.log('Icon B clicked'); 
   const handleIconCClick = () => console.log('Icon C clicked');
 
   return (
     <div className="panel-icons">
       <button 
-        onClick={handleIconAClick}
+        onClick={fullscreenToggle}
         className="p-2 hover:bg-gray-100 rounded transition"
         aria-label="Action A"
+        title="Toggle Fullscreen"
       >🔲</button>
-             <button
-        onClick={handleIconCClick}
-        className="p-2 hover:bg-gray-100 rounded transition"
-        aria-label="Action C"
-      >🎯</button>
       <button
         onClick={handleIconBClick}
         className="p-2 hover:bg-gray-100 rounded transition" 
         aria-label="Action B"
+        title="Dark Mode"
       >🌓</button>
       <button
         onClick={handleIconCClick}
         className="p-2 hover:bg-gray-100 rounded transition"
         aria-label="Action C"
+        title="Save As"
       >💾</button>
       <button
-        onClick={handleIconCClick}
+        onClick={wordcountToggle}
         className="p-2 hover:bg-gray-100 rounded transition"
         aria-label="Action C"
+        title="Word Count"
       >📈</button>
       <button
         onClick={handleIconCClick}
         className="p-2 hover:bg-gray-100 rounded transition"
         aria-label="Action C"
+        title="Timer"
       >⏳</button>
-
-
-            <button
+      <button
         onClick={handleIconCClick}
         className="p-2 hover:bg-gray-100 rounded transition"
         aria-label="Action C"
+        title="Switch Language"
       >🌏</button>
       <button
         onClick={handleIconCClick}
         className="p-2 hover:bg-gray-100 rounded transition"
         aria-label="Action C"
+        title="Delete All"
       >🗑️</button>
+            <button
+        onClick={handleIconCClick}
+        className="p-2 hover:bg-gray-100 rounded transition"
+        aria-label="Action C"
+        title="Deep Focus Mode"
+      >TODO</button>
     </div>
   );
 };
