@@ -4,9 +4,10 @@ import './Panel.css';
 //Define the props interface
 interface PanelProps {
   wordcountToggle: () => void;
+  inputAreaRef: React.RefObject<{getTextContent: () => string} | null>;
 }
 
-const Panel:React.FC<PanelProps> = ({wordcountToggle}) => {
+const Panel = ({wordcountToggle, inputAreaRef}:PanelProps) => {
   const fullscreenToggle = () => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen()
@@ -15,6 +16,21 @@ const Panel:React.FC<PanelProps> = ({wordcountToggle}) => {
       document.exitFullscreen();
     }
   };
+  const exportToFile = () => {
+    if(!inputAreaRef.current)return;
+    
+    const content= inputAreaRef.current.getTextContent();
+    const blob = new Blob([content], { type: 'text/plain' });
+
+    const element = document.createElement('a');
+    element.href = URL.createObjectURL(blob);
+    element.download = `writing_${new Date().toISOString().slice(0,10)}.txt`;
+    
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+    URL.revokeObjectURL(element.href);
+  }
   const handleIconBClick = () => console.log('Icon B clicked'); 
   const handleIconCClick = () => console.log('Icon C clicked');
 
@@ -33,7 +49,7 @@ const Panel:React.FC<PanelProps> = ({wordcountToggle}) => {
         title="Dark Mode"
       >🌓</button>
       <button
-        onClick={handleIconCClick}
+        onClick={exportToFile}
         className="p-2 hover:bg-gray-100 rounded transition"
         aria-label="Action C"
         title="Save As"

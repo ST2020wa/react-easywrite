@@ -1,9 +1,14 @@
 import './InputArea.css';
 import Timer from '../Timer/Timer';
 import WordCount from '../WordCount/WordCount';
-import { useState } from 'react';
+import React, { useImperativeHandle, useRef, useState } from 'react';
 
-const InputArea = ({showWordCount}:any) => {
+interface InputAreaProps {
+    showWordCount: boolean;
+    ref?: React.RefObject<{getTextContent: ()=>string}>;
+}
+
+const InputArea = ({showWordCount, ref}:InputAreaProps) => {
     const [textLength, setTextLength]=useState(0);
 
     const isCJK = (char: string) => {
@@ -20,9 +25,16 @@ const InputArea = ({showWordCount}:any) => {
         setTextLength(countWords(e.target.value));
     };
 
+    const [text, setText]=useState('');
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+    //expose method via ref
+    useImperativeHandle(ref, ()=>({
+        getTextContent: () => textareaRef.current?.value || ''
+    }));
+
     return (
         <div className='inputarea-container'>
-            <textarea onChange={onInputChange} placeholder="Go for a write." className="inputarea" />
+            <textarea ref={textareaRef} value={text} onChange={onInputChange} placeholder="Go for a write." className="inputarea" />
             {showWordCount && <WordCount count={textLength}/>}
         </div>
     );
