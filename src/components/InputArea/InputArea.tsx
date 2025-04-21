@@ -1,8 +1,12 @@
 import './InputArea.css';
 import Timer from '../Timer/Timer';
 import WordCount from '../WordCount/WordCount';
-import React, { useImperativeHandle, useRef, useState } from 'react';
-
+import React, {
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 interface InputAreaProps {
     showWordCount: boolean;
     ref?: React.RefObject<{getTextContent: ()=>string}>;
@@ -12,7 +16,6 @@ const InputArea = ({showWordCount, ref}:InputAreaProps) => {
     const [textLength, setTextLength]=useState(0);
 
     const isCJK = (char: string) => {
-        // Unicode ranges for Chinese/Japanese/Korean characters
         return /[\u4e00-\u9fa5\u3040-\u30ff\uac00-\ud7af]/.test(char);
       };
     const countWords = (text: string)=>{
@@ -23,14 +26,15 @@ const InputArea = ({showWordCount, ref}:InputAreaProps) => {
 
     const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setTextLength(countWords(e.target.value));
+        setText(e.target.value);
     };
 
     const [text, setText]=useState('');
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     //expose method via ref
-    useImperativeHandle(ref, ()=>({
-        getTextContent: () => textareaRef.current?.value || ''
-    }));
+    useImperativeHandle(ref, () => ({
+        getTextContent: () => textareaRef.current?.value || '',
+      }));
 
     return (
         <div className='inputarea-container'>

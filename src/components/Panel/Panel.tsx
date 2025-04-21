@@ -1,5 +1,6 @@
 import React from 'react';
 import './Panel.css';
+import { log } from 'console';
 
 //Define the props interface
 interface PanelProps {
@@ -17,8 +18,8 @@ const Panel = ({wordcountToggle, inputAreaRef}:PanelProps) => {
     }
   };
   const exportToFile = () => {
+    //TODO: inputAreaRef is null
     if(!inputAreaRef.current)return;
-    
     const content= inputAreaRef.current.getTextContent();
     const blob = new Blob([content], { type: 'text/plain' });
 
@@ -31,8 +32,21 @@ const Panel = ({wordcountToggle, inputAreaRef}:PanelProps) => {
     document.body.removeChild(element);
     URL.revokeObjectURL(element.href);
   }
-  const handleIconBClick = () => console.log('Icon B clicked'); 
-  const handleIconCClick = () => console.log('Icon C clicked');
+  const deleteInput = () => {
+    console.log('Delete all clicked');
+  }
+  const switchLanguage = ()=>{
+    console.log('Switch language clicked');
+  }
+  const switchDarkMode = ()=>{
+    console.log('Switch dark mode clicked');
+  }
+  const timerToggle = () => {
+    console.log('Timer clicked');
+  };
+  const deepfocusToggle = () => {
+    console.log('deep focus toggled');
+  };
 
   return (
     <div className="panel-icons">
@@ -43,7 +57,7 @@ const Panel = ({wordcountToggle, inputAreaRef}:PanelProps) => {
         title="Toggle Fullscreen"
       >🔲</button>
       <button
-        onClick={handleIconBClick}
+        onClick={switchDarkMode}
         className="p-2 hover:bg-gray-100 rounded transition" 
         aria-label="Action B"
         title="Dark Mode"
@@ -61,25 +75,25 @@ const Panel = ({wordcountToggle, inputAreaRef}:PanelProps) => {
         title="Word Count"
       >📈</button>
       <button
-        onClick={handleIconCClick}
+        onClick={timerToggle}
         className="p-2 hover:bg-gray-100 rounded transition"
         aria-label="Action C"
         title="Timer"
       >⏳</button>
       <button
-        onClick={handleIconCClick}
+        onClick={switchLanguage}
         className="p-2 hover:bg-gray-100 rounded transition"
         aria-label="Action C"
         title="Switch Language"
       >🌏</button>
       <button
-        onClick={handleIconCClick}
+        onClick={deleteInput}
         className="p-2 hover:bg-gray-100 rounded transition"
         aria-label="Action C"
         title="Delete All"
       >🗑️</button>
-            <button
-        onClick={handleIconCClick}
+      <button
+        onClick={deepfocusToggle}
         className="p-2 hover:bg-gray-100 rounded transition"
         aria-label="Action C"
         title="Deep Focus Mode"
