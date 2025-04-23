@@ -14,7 +14,7 @@ const App = () => {
   return (
     <div className="App">
       <Panel wordcountToggle={wordcountToggle} inputAreaRef={inputAreaRef} />
-      <InputArea showWordCount={showWordCount}/>
+      <InputArea ref={inputAreaRef} showWordCount={showWordCount}/>
     </div>
   );
 };
