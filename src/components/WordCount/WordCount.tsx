@@ -7,7 +7,7 @@ interface WordCountProps {
 
 const WordCount = ({count}: WordCountProps) => {
     return (
-      <div className='word-count'>{count} Words</div>
+      <div className='word-count dark:bg-gray-700 rounded transition dark:text-gray-100'>{count} Words</div>
     );
   };
 

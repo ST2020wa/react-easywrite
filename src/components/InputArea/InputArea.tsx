@@ -39,7 +39,7 @@ const InputArea = forwardRef<{getTextContent: () => string}, InputAreaProps>(({s
 
     return (
         <div className='inputarea-container'>
-            <textarea ref={textareaRef} value={text} onChange={onInputChange} placeholder="Go for a write." className="inputarea" />
+            <textarea ref={textareaRef} value={text} onChange={onInputChange} placeholder="Go for a write." className="inputarea dark:bg-gray-700 rounded transition dark:text-gray-100" />
             {showWordCount && <WordCount count={textLength}/>}
         </div>
     );

@@ -1,4 +1,9 @@
 @tailwind base;
+@layer base {
+  html {
+    @apply transition-colors duration-200;
+  }
+}
 @tailwind components;
 @tailwind utilities;
 
