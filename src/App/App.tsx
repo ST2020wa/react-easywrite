@@ -13,6 +13,9 @@ const App = () => {
 
   return (
     <div className="App">
+      <div className="bg-blue-500 text-white p-4">
+  Tailwind测试
+</div>
       <Panel wordcountToggle={wordcountToggle} inputAreaRef={inputAreaRef} />
       <InputArea ref={inputAreaRef} showWordCount={showWordCount}/>
     </div>

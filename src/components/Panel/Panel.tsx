@@ -18,8 +18,6 @@ const Panel = ({wordcountToggle, inputAreaRef}:PanelProps) => {
     }
   };
   const exportToFile = () => {
-    //TODO: inputAreaRef is null
-    console.log(inputAreaRef)
     if(!inputAreaRef.current)return;
     const content= inputAreaRef.current.getTextContent();
     const blob = new Blob([content], { type: 'text/plain' });
