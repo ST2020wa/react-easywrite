@@ -1,0 +1,38 @@
+{
+  "fullScreen": {
+    "title": "Toggle Full Screen",
+    "ariaLabel": "Toggle Full Screen"
+  },
+  "darkMode": {
+    "title": "Toggle Dark Mode",
+    "ariaLabel": "Toggle Dark Mode"
+  },
+  "exportTxt": { 
+    "title": "Export to File",
+    "ariaLabel": "Export to File"
+  },
+  "wordCount":{
+    "title": "Words Count",
+    "ariaLabel": "Words Count"
+  },
+  "timer": {
+    "title": "Show/Hide Timer",
+    "ariaLabel": "Show/Hide Timer"
+  },
+    "languageSwitch": {
+      "title": "Switch Language",
+      "ariaLabel": "Change language"
+    },
+    "deleteAll": {
+      "title": "Delete All Input",
+      "ariaLabel": "Delete All Input"
+    },
+    "deepFocus": {
+      "title": "Toggle Deep Focus",
+      "ariaLabel": "Toggle Deep Focus"
+    },
+    "goForWrite":{
+      "title": "Go for a write.",
+      "ariaLabel": "Go for a write."
+    }
+  }

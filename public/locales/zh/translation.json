@@ -1,0 +1,38 @@
+{
+    "languageSwitch": {
+      "title": "切换语言",
+      "ariaLabel": "切换语言"
+    },
+    "fullScreen": {
+      "title": "切换全屏",
+      "ariaLabel": "切换全屏"
+    },
+    "darkMode": {
+      "title": "切换深色模式",
+      "ariaLabel": "切换深色模式"
+    },
+    "exportTxt": {
+      "title": "导出文本",
+      "ariaLabel": "导出文本" 
+    },
+    "wordCount":{
+      "title": "字数统计",
+      "ariaLabel": "字数统计"
+    },
+    "timer": {
+      "title": "显示/隐藏计时器",
+      "ariaLabel": "显示/隐藏计时器"
+    },
+    "deepFocus": {
+      "title": "深度专注模式",
+      "ariaLabel": "深度专注模式"
+    },
+    "deleteAll": {
+      "title": "删除所有输入",
+      "ariaLabel": "删除所有输入"
+    },
+    "goForWrite":{
+      "title": "写一个吧～",
+      "ariaLabel": "写一个吧"
+    }
+  }

@@ -7,12 +7,14 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface InputAreaProps {
     showWordCount: boolean;
 }
 
 const InputArea = forwardRef<{getTextContent: () => string}, InputAreaProps>(({showWordCount}, ref) => {
+    const {t, i18n} = useTranslation();
     const [textLength, setTextLength]=useState(0);
     const [text, setText]=useState('');
 
@@ -39,7 +41,7 @@ const InputArea = forwardRef<{getTextContent: () => string}, InputAreaProps>(({s
 
     return (
         <div className='inputarea-container'>
-            <textarea ref={textareaRef} value={text} onChange={onInputChange} placeholder="Go for a write." className="inputarea dark:bg-gray-700 rounded transition dark:text-gray-100" />
+            <textarea ref={textareaRef} value={text} onChange={onInputChange} placeholder={t('goForWrite.title')} className="inputarea dark:bg-gray-700 rounded transition dark:text-gray-100" />
             {showWordCount && <WordCount count={textLength}/>}
         </div>
     );

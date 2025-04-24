@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Panel.css';
+import { useTranslation } from 'react-i18next';
 
 //Define the props interface
 interface PanelProps {
@@ -8,6 +9,7 @@ interface PanelProps {
 }
 
 const Panel = ({wordcountToggle, inputAreaRef}:PanelProps) => {
+  const {t, i18n} = useTranslation();
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(()=>{
@@ -52,7 +54,8 @@ const Panel = ({wordcountToggle, inputAreaRef}:PanelProps) => {
   }
 
   const switchLanguage = ()=>{
-    console.log('Switch language clicked');
+    const newLang = i18n.language === 'en' ? 'zh' : 'en';
+    i18n.changeLanguage(newLang);
   }
 
   const timerToggle = () => {
@@ -68,51 +71,51 @@ const Panel = ({wordcountToggle, inputAreaRef}:PanelProps) => {
       <button 
         onClick={fullscreenToggle}
         className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition"
-        aria-label="Action A"
-        title="Toggle Fullscreen"
+        aria-label={t('fullScreen.ariaLabel')}
+        title={t('fullScreen.title')}
       >🔲</button>
       <button
         onClick={switchDarkMode}
         className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition"
-        aria-label="Action B"
-        title="Dark Mode"
+        aria-label={t('darkMode.ariaLabel')}
+        title={t('darkMode.title')}
       >🌓</button>
       <button
         onClick={exportToFile}
         className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition"
-        aria-label="Action C"
-        title="Save As"
+        aria-label={t('exportTxt.ariaLabel')}
+        title={t('exportTxt.title')}
       >💾</button>
       <button
         onClick={wordcountToggle}
         className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition"
-        aria-label="Action C"
-        title="Word Count"
+        aria-label={t('wordCount.ariaLabel')}
+        title={t('wordCount.title')}
       >📈</button>
       <button
         onClick={timerToggle}
         className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition"
-        aria-label="Action C"
-        title="Timer"
+        aria-label={t('timer.ariaLabel')}
+        title={t('timer.title')}
       >⏳</button>
       <button
         onClick={switchLanguage}
         className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition"
-        aria-label="Action C"
-        title="Switch Language"
+        aria-label={t('languageSwitch.ariaLabel')}
+        title={t('languageSwitch.title')}
       >🌏</button>
       <button
         onClick={deleteInput}
         className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition"
-        aria-label="Action C"
-        title="Delete All"
+        aria-label={t('deleteAll.ariaLabel')}
+        title={t('deleteAll.title')}
       >🗑️</button>
       <button
         onClick={deepfocusToggle}
         className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition"
-        aria-label="Action C"
-        title="Deep Focus Mode"
-      >TODO</button>
+        aria-label={t('deepFocus.ariaLabel')}
+        title={t('deepFocus.title')}
+      >💡</button>
     </div>
   );
 };
