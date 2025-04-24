@@ -34,5 +34,9 @@
     "goForWrite":{
       "title": "写一个吧～",
       "ariaLabel": "写一个吧"
+    },
+    "wordcountAmount":{
+      "title": "字",
+      "ariaLabel": "字"
     }
   }

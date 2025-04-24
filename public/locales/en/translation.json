@@ -34,5 +34,9 @@
     "goForWrite":{
       "title": "Go for a write.",
       "ariaLabel": "Go for a write."
+    },
+    "wordcountAmount":{
+      "title": "Words",
+      "ariaLabel": "Words"
     }
   }

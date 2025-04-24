@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import './Panel.css';
 import { useTranslation } from 'react-i18next';
 
-//Define the props interface
 interface PanelProps {
   wordcountToggle: () => void;
+  timerToggle: () => void;
   inputAreaRef: React.RefObject<{getTextContent: () => string} | null>;
 }
 
-const Panel = ({wordcountToggle, inputAreaRef}:PanelProps) => {
+const Panel = ({wordcountToggle, timerToggle, inputAreaRef}:PanelProps) => {
   const {t, i18n} = useTranslation();
   const [darkMode, setDarkMode] = useState(false);
 
@@ -50,7 +50,8 @@ const Panel = ({wordcountToggle, inputAreaRef}:PanelProps) => {
   }
 
   const deleteInput = () => {
-    console.log('Delete all clicked');
+    //TODO: add confirmation dialog
+    localStorage.setItem('textInput', '');
   }
 
   const switchLanguage = ()=>{
@@ -58,10 +59,7 @@ const Panel = ({wordcountToggle, inputAreaRef}:PanelProps) => {
     i18n.changeLanguage(newLang);
   }
 
-  const timerToggle = () => {
-    console.log('Timer clicked');
-  };
-
+  //TODO
   const deepfocusToggle = () => {
     console.log('deep focus toggled');
   };
