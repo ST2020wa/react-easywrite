@@ -52,6 +52,8 @@ const Panel = ({wordcountToggle, timerToggle, inputAreaRef}:PanelProps) => {
   const deleteInput = () => {
     //TODO: add confirmation dialog
     localStorage.setItem('textInput', '');
+    inputAreaRef.current?.getTextContent();
+    window.location.reload();
   }
 
   const switchLanguage = ()=>{
