@@ -43,25 +43,64 @@ const InputArea = forwardRef<{getTextContent: () => string}, InputAreaProps>(({s
     const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         if (deepFocus) {
             const newText = e.target.value;
-            const cursorPos = e.target.selectionStart;
             
-            // Only allow adding text at the end
-            if (cursorPos < lastCursorPosition) {
+            
+            // If the new text is shorter than the old text, prevent deletion
+            if (newText.length < text.length) {
+                //TODO: what does this do?
                 e.target.value = text;
-                e.target.selectionStart = e.target.selectionEnd = lastCursorPosition;
+                e.target.selectionStart = e.target.selectionEnd = text.length;
+                return;
+            }
+            
+            // If the new text starts differently from the old text, prevent editing
+            if (!newText.startsWith(text)) {
+                e.target.value = text;
+                e.target.selectionStart = e.target.selectionEnd = text.length;
+                alert('Don\'t look back.');
                 return;
             }
             
             setText(newText);
-            setLastCursorPosition(cursorPos);
+            setLastCursorPosition(newText.length);
         } else {
             setText(e.target.value);
         }
+        setText(e.target.value);
         setTextLength(countWords(e.target.value));
         localStorage.setItem('textInput', e.target.value);
     };
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (!deepFocus) return;
+        
+        const textarea = e.currentTarget;
+        const cursorPos = textarea.selectionStart;
+        
+        // Prevent arrow keys, home key, and mouse clicks from moving cursor backwards
+        if (
+            (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'Home') ||
+            (e.key === 'Backspace' && cursorPos < text.length)
+        ) {
+            e.preventDefault();
+            textarea.selectionStart = textarea.selectionEnd = text.length;
+            alert('Don\'t look back.');
+        }
+    };
+
+    const handleMouseDown = (e: React.MouseEvent<HTMLTextAreaElement>) => {
+        if (!deepFocus) return;
+        
+        const textarea = e.currentTarget;
+        const cursorPos = textarea.selectionStart;
+        
+        if (cursorPos < text.length) {
+            e.preventDefault();
+            textarea.selectionStart = textarea.selectionEnd = text.length;
+        }
+    };
 
     useImperativeHandle(ref, () => ({
         getTextContent: () => text || '',
@@ -69,7 +108,15 @@ const InputArea = forwardRef<{getTextContent: () => string}, InputAreaProps>(({s
 
     return (
         <div className='inputarea-container'>
-            <textarea ref={textareaRef} value={text} onChange={onInputChange} placeholder={t('goForWrite.title')} className="inputarea dark:bg-gray-700 rounded transition dark:text-gray-100" />
+            <textarea 
+                ref={textareaRef} 
+                value={text} 
+                onChange={onInputChange}
+                onKeyDown={handleKeyDown}
+                onMouseDown={handleMouseDown}
+                placeholder={t('goForWrite.title')} 
+                className="inputarea dark:bg-gray-700 rounded transition dark:text-gray-100" 
+            />
             {showWordCount && <WordCount count={textLength}/>}
             <div className={showTimer ? '' : 'hidden'}><Timer /></div>
         </div>
