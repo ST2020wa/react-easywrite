@@ -6,6 +6,7 @@ import React, {
   useImperativeHandle,
   useRef,
   useState,
+  useEffect,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -18,6 +19,16 @@ const InputArea = forwardRef<{getTextContent: () => string}, InputAreaProps>(({s
     const {t, i18n} = useTranslation();
     const [textLength, setTextLength]=useState(0);
     const [text, setText]=useState(localStorage.getItem('textInput') ? localStorage.getItem('textInput') : '');
+    const [deepFocus, setDeepFocus] = useState(localStorage.getItem('deepFocus') === 'true');
+    const [lastCursorPosition, setLastCursorPosition] = useState(0);
+
+    useEffect(() => {
+        const handleStorageChange = () => {
+            setDeepFocus(localStorage.getItem('deepFocus') === 'true');
+        };
+        window.addEventListener('storage', handleStorageChange);
+        return () => window.removeEventListener('storage', handleStorageChange);
+    }, []);
 
     const isCJK = (char: string) => {
         return /[\u4e00-\u9fa5\u3040-\u30ff\uac00-\ud7af]/.test(char);
@@ -30,9 +41,24 @@ const InputArea = forwardRef<{getTextContent: () => string}, InputAreaProps>(({s
     };
 
     const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        if (deepFocus) {
+            const newText = e.target.value;
+            const cursorPos = e.target.selectionStart;
+            
+            // Only allow adding text at the end
+            if (cursorPos < lastCursorPosition) {
+                e.target.value = text;
+                e.target.selectionStart = e.target.selectionEnd = lastCursorPosition;
+                return;
+            }
+            
+            setText(newText);
+            setLastCursorPosition(cursorPos);
+        } else {
+            setText(e.target.value);
+        }
         setTextLength(countWords(e.target.value));
-        setText(e.target.value);
-        localStorage.setItem('textInput',text);
+        localStorage.setItem('textInput', e.target.value);
     };
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);

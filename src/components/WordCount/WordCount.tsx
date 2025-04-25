@@ -1,4 +1,3 @@
-import { count } from 'console';
 import './WordCount.css';
 import { useTranslation } from 'react-i18next';
 

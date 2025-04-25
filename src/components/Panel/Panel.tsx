@@ -11,6 +11,7 @@ interface PanelProps {
 const Panel = ({wordcountToggle, timerToggle, inputAreaRef}:PanelProps) => {
   const {t, i18n} = useTranslation();
   const [darkMode, setDarkMode] = useState(false);
+  const [deepFocus, setDeepFocus] = useState(false);
 
   useEffect(()=>{
     const isDark = localStorage.getItem('darkMode')==='true' || (window.matchMedia('(prefers-color-scheme: dark)').matches);
@@ -61,9 +62,10 @@ const Panel = ({wordcountToggle, timerToggle, inputAreaRef}:PanelProps) => {
     i18n.changeLanguage(newLang);
   }
 
-  //TODO
   const deepfocusToggle = () => {
-    console.log('deep focus toggled');
+    setDeepFocus(!deepFocus);
+    // Pass the deep focus state to InputArea through localStorage
+    localStorage.setItem('deepFocus', (!deepFocus).toString());
   };
 
   return (
