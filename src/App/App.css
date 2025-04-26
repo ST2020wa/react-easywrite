@@ -11,3 +11,6 @@
 .inputarea {
   flex: 1;
 }
+/* .App{
+TODO: when scroll down, panel height is longer than input area.
+} */

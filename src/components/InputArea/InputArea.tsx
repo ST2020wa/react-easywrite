@@ -68,7 +68,6 @@ const InputArea = forwardRef<{getTextContent: () => string}, InputAreaProps>(({s
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        console.log('key down')
         if (!deepFocus) return;
         
         const textarea = e.currentTarget;
@@ -86,7 +85,6 @@ const InputArea = forwardRef<{getTextContent: () => string}, InputAreaProps>(({s
     };
 
     const handleMouseDown = (e: React.MouseEvent<HTMLTextAreaElement>) => {
-        console.log(deepFocus)
         if (!deepFocus){
             return;
         }else{
