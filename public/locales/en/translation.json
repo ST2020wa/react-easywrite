@@ -25,7 +25,10 @@
     },
     "deleteAll": {
       "title": "Delete All Input",
-      "ariaLabel": "Delete All Input"
+      "ariaLabel": "Delete All Input",
+      "confirmMessage": "Are you sure you want to delete all your writing? This action cannot be undone.",
+      "cancel": "Cancel",
+      "confirm": "Delete"
     },
     "deepFocus": {
       "title": "Toggle Deep Focus",

@@ -50,6 +50,7 @@ const InputArea = forwardRef<{getTextContent: () => string}, InputAreaProps>(({s
                 //TODO: what does this do?
                 e.target.value = text;
                 e.target.selectionStart = e.target.selectionEnd = text.length;
+                alert('Don\'t look back, keep writing.');
                 return;
             }
             
@@ -57,7 +58,7 @@ const InputArea = forwardRef<{getTextContent: () => string}, InputAreaProps>(({s
             if (!newText.startsWith(text)) {
                 e.target.value = text;
                 e.target.selectionStart = e.target.selectionEnd = text.length;
-                alert('Don\'t look back.');
+                alert('Don\'t look back, keep writing.');
                 return;
             }
             
@@ -86,7 +87,7 @@ const InputArea = forwardRef<{getTextContent: () => string}, InputAreaProps>(({s
         ) {
             e.preventDefault();
             textarea.selectionStart = textarea.selectionEnd = text.length;
-            alert('Don\'t look back.');
+            alert('Don\'t look back, keep writing.');
         }
     };
 

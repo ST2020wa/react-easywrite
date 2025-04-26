@@ -8,10 +8,12 @@ const App = () => {
   const [showWordCount, setShowWordCount]=useState(true);
   const [showTimer, setShowTimer]=useState(true);
   const wordcountToggle = () => {
+    //TODO: let localstorage remember the state
     setShowWordCount(prev => !prev);
   }
   const timerToggle = () => {
     setShowTimer(prev => !prev);
+    //TODO: let localstorage remember the state
   }
 
   return (
