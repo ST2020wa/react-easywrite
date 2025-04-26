@@ -17,29 +17,36 @@
   },
   "timer": {
     "title": "Show/Hide Timer",
-    "ariaLabel": "Show/Hide Timer"
+    "ariaLabel": "Show/Hide Timer",
+    "minutes": "minutes",
+    "start": "Start",
+    "stop": "Stop",
+    "timeUp": "Time is up! Take a break.",
+    "minTimeWarning": "Time should be at least 1 minute.🤔",
+    "maxTimeWarning": "4-hour is great enough for a break :-)"
   },
-    "languageSwitch": {
-      "title": "Switch Language",
-      "ariaLabel": "Change language"
-    },
-    "deleteAll": {
-      "title": "Delete All Input",
-      "ariaLabel": "Delete All Input",
-      "confirmMessage": "Are you sure you want to delete all your writing? This action cannot be undone.",
-      "cancel": "Cancel",
-      "confirm": "Delete"
-    },
-    "deepFocus": {
-      "title": "Toggle Deep Focus",
-      "ariaLabel": "Toggle Deep Focus"
-    },
-    "goForWrite":{
-      "title": "Go for a write.",
-      "ariaLabel": "Go for a write."
-    },
-    "wordcountAmount":{
-      "title": "Words",
-      "ariaLabel": "Words"
-    }
+  "languageSwitch": {
+    "title": "Switch Language",
+    "ariaLabel": "Change language"
+  },
+  "deleteAll": {
+    "title": "Delete All Input",
+    "ariaLabel": "Delete All Input",
+    "confirmMessage": "Are you sure you want to delete all your writing? This action cannot be undone.",
+    "cancel": "Cancel",
+    "confirm": "Delete"
+  },
+  "deepFocus": {
+    "title": "Toggle Deep Focus",
+    "ariaLabel": "Toggle Deep Focus",
+    "dontlookback": "Don't look back, keep writing."
+  },
+  "goForWrite":{
+    "title": "Go for a write.",
+    "ariaLabel": "Go for a write."
+  },
+  "wordcountAmount":{
+    "title": "Words",
+    "ariaLabel": "Words"
   }
+}

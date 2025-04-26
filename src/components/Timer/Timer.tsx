@@ -1,15 +1,15 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const MAX_MINUTES = 240;
 
 const Timer = () => {
     //TODO
     /*
-    1-start doesn't start from current time count;
-    2-when time end there's should be an alert dialog;
+    1-when time end there're two dialogs popping up;
     3-some buttons are not dark in dark mode;
-    4-i18n
     */
+  const { t } = useTranslation();
   const [minutes, setMinutes] = useState(25);
   const [timeLeft, setTimeLeft] = useState(25 * 60);
   const [isRunning, setIsRunning] = useState(false);
@@ -36,6 +36,7 @@ const Timer = () => {
         const updated = prev - Math.floor(delta / 1000);
         if (updated <= 0) {
           stop();
+          alert(t('timer.timeUp', 'Time is up! Take a break.'));
           return 0;
         }
         return updated;
@@ -44,15 +45,16 @@ const Timer = () => {
     }
 
     frameRef.current = requestAnimationFrame(updateTime);
-  }, []);
+  }, [t]);
 
   const start = () => {
     if(!minutes){
-        alert('Time should be at least 1 minute.🤔')
-        return;
-    };
+      alert(t('timer.minTimeWarning', 'Time should be at least 1 minute.🤔'));
+      return;
+    }
     setTimeLeft(minutes * 60);
     setIsRunning(true);
+    lastTimeRef.current = 0; // Reset the last time to ensure accurate timing
     frameRef.current = requestAnimationFrame(updateTime);
   };
 
@@ -87,14 +89,14 @@ const Timer = () => {
               setMinutes(val);
               setTimeLeft(val * 60);
             }}
-            className="w-16 px-2 py-1 rounded bg-gray-100 dark:bg-gray-700 border-none mr-2 text-center"
+            className="w-16 px-2 py-1 rounded bg-gray-100 dark:bg-gray-700 border-none mr-2 text-center text-black dark:text-white"
           />
-          minutes
+          {t('timer.minutes', 'minutes')}
           <button
             onClick={start}
-            className="ml-3 px-3 py-1 bg-green-500 hover:bg-green-600 text-white rounded"
+            className="ml-3 px-3 py-1 bg-green-500 hover:bg-green-600 text-white rounded transition"
           >
-            Start
+            {t('timer.start', 'Start')}
           </button>
         </>
       ) : (
@@ -102,14 +104,16 @@ const Timer = () => {
           <div className="text-center text-xl font-mono mb-2">{formatTime(timeLeft)}</div>
           <button
             onClick={stop}
-            className="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded"
+            className="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded transition"
           >
-            Stop
+            {t('timer.stop', 'Stop')}
           </button>
         </>
       )}
       {showWarning && (
-        <div className="text-red-500 mt-2 text-sm">4-hour is great enough for a break :-)</div>
+        <div className="text-red-500 mt-2 text-sm">
+          {t('timer.maxTimeWarning', '4-hour is great enough for a break :-)')}
+        </div>
       )}
     </div>
   );

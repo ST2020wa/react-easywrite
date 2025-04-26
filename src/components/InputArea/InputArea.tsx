@@ -9,6 +9,7 @@ import React, {
   useEffect,
 } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDeepFocus } from '../../hooks/useDeepFocus';
 
 interface InputAreaProps {
     showWordCount: boolean;
@@ -19,22 +20,15 @@ const InputArea = forwardRef<{getTextContent: () => string}, InputAreaProps>(({s
     const {t, i18n} = useTranslation();
     const [textLength, setTextLength]=useState(0);
     const [text, setText]=useState(localStorage.getItem('textInput') ? localStorage.getItem('textInput') : '');
-    const [deepFocus, setDeepFocus] = useState(localStorage.getItem('deepFocus') === 'true');
+    const { deepFocus } = useDeepFocus();
     const [lastCursorPosition, setLastCursorPosition] = useState(0);
-
-    useEffect(() => {
-        const handleStorageChange = () => {
-            setDeepFocus(localStorage.getItem('deepFocus') === 'true');
-        };
-        window.addEventListener('storage', handleStorageChange);
-        return () => window.removeEventListener('storage', handleStorageChange);
-    }, []);
 
     const isCJK = (char: string) => {
         return /[\u4e00-\u9fa5\u3040-\u30ff\uac00-\ud7af]/.test(char);
     };
 
     const countWords = (text: string)=>{
+        //TODO: copy paste inputs should be counted correctly.
         const englishWords = text.split(/[\s]+/).filter(w => w.length > 0 && !isCJK(w));
         const cjkWords = Array.from(text).filter(word => isCJK(word));
         return englishWords.length + cjkWords.length;
@@ -43,7 +37,6 @@ const InputArea = forwardRef<{getTextContent: () => string}, InputAreaProps>(({s
     const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         if (deepFocus) {
             const newText = e.target.value;
-            
             
             // If the new text is shorter than the old text, prevent deletion
             if (newText.length < text.length) {
@@ -75,6 +68,7 @@ const InputArea = forwardRef<{getTextContent: () => string}, InputAreaProps>(({s
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        console.log('key down')
         if (!deepFocus) return;
         
         const textarea = e.currentTarget;
@@ -92,14 +86,18 @@ const InputArea = forwardRef<{getTextContent: () => string}, InputAreaProps>(({s
     };
 
     const handleMouseDown = (e: React.MouseEvent<HTMLTextAreaElement>) => {
-        if (!deepFocus) return;
-        
-        const textarea = e.currentTarget;
-        const cursorPos = textarea.selectionStart;
-        
-        if (cursorPos < text.length) {
-            e.preventDefault();
-            textarea.selectionStart = textarea.selectionEnd = text.length;
+        console.log(deepFocus)
+        if (!deepFocus){
+            return;
+        }else{
+            const textarea = e.currentTarget;
+            const cursorPos = textarea.selectionStart;
+            
+            if (cursorPos < text.length) {
+                e.preventDefault();
+                textarea.selectionStart = textarea.selectionEnd = text.length;
+                alert(t('deepFocus.dontlookback'))
+            }
         }
     };
 

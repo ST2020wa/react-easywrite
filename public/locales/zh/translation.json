@@ -21,11 +21,18 @@
     },
     "timer": {
       "title": "显示/隐藏计时器",
-      "ariaLabel": "显示/隐藏计时器"
+      "ariaLabel": "显示/隐藏计时器",
+      "minutes": "分",
+      "start": "开始计时",
+      "stop": "停止计时",
+      "timeUp": "时间到啦，休息一下吧♨️",
+      "minTimeWarning": "至少要写1分钟哦🤔",
+      "maxTimeWarning": "4小时已经足够休息啦💤"
     },
     "deepFocus": {
       "title": "深度专注模式",
-      "ariaLabel": "深度专注模式"
+      "ariaLabel": "深度专注模式",
+      "dontlookback": "先不急着改，继续写吧:)"
     },
     "deleteAll": {
       "title": "删除所有输入",

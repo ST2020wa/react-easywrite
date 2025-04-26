@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Panel.css';
 import { useTranslation } from 'react-i18next';
+import { useDeepFocus } from '../../hooks/useDeepFocus';
 
 interface PanelProps {
   wordcountToggle: () => void;
@@ -11,7 +12,7 @@ interface PanelProps {
 const Panel = ({wordcountToggle, timerToggle, inputAreaRef}:PanelProps) => {
   const {t, i18n} = useTranslation();
   const [darkMode, setDarkMode] = useState(false);
-  const [deepFocus, setDeepFocus] = useState(false);
+  const { deepFocus, toggleDeepFocus } = useDeepFocus();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   useEffect(()=>{
@@ -71,12 +72,6 @@ const Panel = ({wordcountToggle, timerToggle, inputAreaRef}:PanelProps) => {
     i18n.changeLanguage(newLang);
   }
 
-  const deepfocusToggle = () => {
-    setDeepFocus(!deepFocus);
-    // Pass the deep focus state to InputArea through localStorage
-    localStorage.setItem('deepFocus', (!deepFocus).toString());
-  };
-
   return (
     <>
       <div className={`panel-icons ${darkMode ? 'dark' : ''}`}>
@@ -123,7 +118,7 @@ const Panel = ({wordcountToggle, timerToggle, inputAreaRef}:PanelProps) => {
           title={t('deleteAll.title')}
         >🗑️</button>
         <button
-          onClick={deepfocusToggle}
+          onClick={toggleDeepFocus}
           className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition"
           aria-label={t('deepFocus.ariaLabel')}
           title={t('deepFocus.title')}
