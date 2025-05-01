@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import './Panel.css';
 import { useTranslation } from 'react-i18next';
 import { useDeepFocus } from '../../hooks/useDeepFocus';
+import useDarkMode from '../../hooks/useDarkMode';
+import DeleteConfirmModal from '../DeleteConfirmModal/DeleteConfirmModal';
 
 interface PanelProps {
   wordcountToggle: () => void;
@@ -9,37 +11,36 @@ interface PanelProps {
   inputAreaRef: React.RefObject<{getTextContent: () => string} | null>;
 }
 
-const Panel = ({wordcountToggle, timerToggle, inputAreaRef}:PanelProps) => {
-  const {t, i18n} = useTranslation();
-  const [darkMode, setDarkMode] = useState(false);
+interface ButtonConfig {
+  onClick: () => void;
+  ariaLabel: string;
+  title: string;
+  icon: string;
+}
+
+const Panel = ({ wordcountToggle, timerToggle, inputAreaRef }:PanelProps) => {
+  const { t, i18n } = useTranslation();
+  const { darkMode, toggleDarkMode } = useDarkMode();
   const { deepFocus, toggleDeepFocus } = useDeepFocus();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  useEffect(()=>{
-    const isDark = localStorage.getItem('darkMode')==='true' || (window.matchMedia('(prefers-color-scheme: dark)').matches);
-    setDarkMode(isDark);
-    document.documentElement.classList.toggle('dark', isDark);
-  },[]);
+  const buttonClassName = useMemo(() => 
+    "p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition",
+    []
+  );
 
-  const switchDarkMode = ()=>{
-    const newMode = !darkMode;
-    setDarkMode(newMode);
-    localStorage.setItem('darkMode', newMode.toString());
-    document.documentElement.classList.toggle('dark', newMode);
-  }
-
-  const fullscreenToggle = () => {
+  const fullscreenToggle = useCallback(() => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen()
         .catch(err => console.error('Fullscreen error:', err));
     } else {
       document.exitFullscreen();
     }
-  };
+  }, []);
 
-  const exportToFile = () => {
-    if(!inputAreaRef.current)return;
-    const content= inputAreaRef.current.getTextContent();
+  const exportToFile = useCallback(() => {
+    if(!inputAreaRef.current) return;
+    const content = inputAreaRef.current.getTextContent();
     const blob = new Blob([content], { type: 'text/plain' });
 
     const element = document.createElement('a');
@@ -50,109 +51,113 @@ const Panel = ({wordcountToggle, timerToggle, inputAreaRef}:PanelProps) => {
     element.click();
     document.body.removeChild(element);
     URL.revokeObjectURL(element.href);
-  }
+  }, [inputAreaRef]);
 
-  const deleteInput = () => {
+  const deleteInput = useCallback(() => {
     setShowDeleteConfirm(true);
-  }
+  }, []);
 
-  const confirmDelete = () => {
+  const confirmDelete = useCallback(() => {
     localStorage.setItem('textInput', '');
     inputAreaRef.current?.getTextContent();
     setShowDeleteConfirm(false);
     window.location.reload();
-  }
+  }, [inputAreaRef]);
 
-  const cancelDelete = () => {
+  const cancelDelete = useCallback(() => {
     setShowDeleteConfirm(false);
-  }
+  }, []);
 
-  const switchLanguage = ()=>{
+  const switchLanguage = useCallback(() => {
     const newLang = i18n.language === 'en' ? 'zh' : 'en';
     i18n.changeLanguage(newLang);
-  }
+  }, [i18n]);
+
+  const buttons: ButtonConfig[] = useMemo(() => [
+    {
+      onClick: fullscreenToggle,
+      ariaLabel: t('fullScreen.ariaLabel'),
+      title: t('fullScreen.title'),
+      icon: '🔲'
+    },
+    {
+      onClick: toggleDarkMode,
+      ariaLabel: t('darkMode.ariaLabel'),
+      title: t('darkMode.title'),
+      icon: '🌓'
+    },
+    {
+      onClick: exportToFile,
+      ariaLabel: t('exportTxt.ariaLabel'),
+      title: t('exportTxt.title'),
+      icon: '💾'
+    },
+    {
+      onClick: wordcountToggle,
+      ariaLabel: t('wordCount.ariaLabel'),
+      title: t('wordCount.title'),
+      icon: '📈'
+    },
+    {
+      onClick: timerToggle,
+      ariaLabel: t('timer.ariaLabel'),
+      title: t('timer.title'),
+      icon: '⏳'
+    },
+    {
+      onClick: switchLanguage,
+      ariaLabel: t('languageSwitch.ariaLabel'),
+      title: t('languageSwitch.title'),
+      icon: '🌏'
+    },
+    {
+      onClick: deleteInput,
+      ariaLabel: t('deleteAll.ariaLabel'),
+      title: t('deleteAll.title'),
+      icon: '🗑️'
+    },
+    {
+      onClick: toggleDeepFocus,
+      ariaLabel: t('deepFocus.ariaLabel'),
+      title: t('deepFocus.title'),
+      icon: '💡'
+    }
+  ], [
+    fullscreenToggle,
+    toggleDarkMode,
+    exportToFile,
+    wordcountToggle,
+    timerToggle,
+    switchLanguage,
+    deleteInput,
+    toggleDeepFocus,
+    t
+  ]);
 
   return (
     <>
       <div className={`panel-icons ${darkMode ? 'dark' : ''}`}>
-        <button 
-          onClick={fullscreenToggle}
-          className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition"
-          aria-label={t('fullScreen.ariaLabel')}
-          title={t('fullScreen.title')}
-        >🔲</button>
-        <button
-          onClick={switchDarkMode}
-          className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition"
-          aria-label={t('darkMode.ariaLabel')}
-          title={t('darkMode.title')}
-        >🌓</button>
-        <button
-          onClick={exportToFile}
-          className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition"
-          aria-label={t('exportTxt.ariaLabel')}
-          title={t('exportTxt.title')}
-        >💾</button>
-        <button
-          onClick={wordcountToggle}
-          className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition"
-          aria-label={t('wordCount.ariaLabel')}
-          title={t('wordCount.title')}
-        >📈</button>
-        <button
-          onClick={timerToggle}
-          className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition"
-          aria-label={t('timer.ariaLabel')}
-          title={t('timer.title')}
-        >⏳</button>
-        <button
-          onClick={switchLanguage}
-          className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition"
-          aria-label={t('languageSwitch.ariaLabel')}
-          title={t('languageSwitch.title')}
-        >🌏</button>
-        <button
-          onClick={deleteInput}
-          className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition"
-          aria-label={t('deleteAll.ariaLabel')}
-          title={t('deleteAll.title')}
-        >🗑️</button>
-        <button
-          onClick={toggleDeepFocus}
-          className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition"
-          aria-label={t('deepFocus.ariaLabel')}
-          title={t('deepFocus.title')}
-        >💡</button>
+        {buttons.map((button, index) => (
+          <button
+            key={index}
+            onClick={button.onClick}
+            className={buttonClassName}
+            aria-label={button.ariaLabel}
+            title={button.title}
+          >
+            {button.icon}
+          </button>
+        ))}
       </div>
 
       {showDeleteConfirm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
-            <h3 className="text-lg font-medium mb-4 text-gray-900 dark:text-white">
-              {t('deleteAll.title')}
-            </h3>
-            <p className="text-gray-600 dark:text-gray-300 mb-6">
-              {t('deleteAll.confirmMessage', 'Are you sure you want to delete all your writing? This action cannot be undone.')}
-            </p>
-            <div className="flex justify-end space-x-4">
-              <button
-                onClick={cancelDelete}
-                className="px-4 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition"
-              >
-                {t('deleteAll.cancel', 'Cancel')}
-              </button>
-              <button
-                onClick={confirmDelete}
-                className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded transition"
-              >
-                {t('deleteAll.confirm', 'Delete')}
-              </button>
-            </div>
-          </div>
-        </div>
+        <DeleteConfirmModal
+          onConfirm={confirmDelete}
+          onCancel={cancelDelete}
+        />
       )}
     </>
   );
 };
 
-export default Panel;
+export default React.memo(Panel);

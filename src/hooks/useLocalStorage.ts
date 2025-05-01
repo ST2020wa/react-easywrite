@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 type SetValue<T> = (value: T | ((prevValue: T) => T)) => void;
 
 // to get the value from the local storage
+// TODO: when first time loading the app, the value is not set in the local storage, so the value is not set and not correct.
 function useLocalStorage<T>(key: string, initialValue: T): [T, SetValue<T>] {
   const [storedValue, setStoredValue] = useState<T>(() => {
     try {
