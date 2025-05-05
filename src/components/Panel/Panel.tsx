@@ -24,11 +24,6 @@ const Panel = ({ wordcountToggle, timerToggle, inputAreaRef }:PanelProps) => {
   const { deepFocus, toggleDeepFocus } = useDeepFocus();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  const buttonClassName = useMemo(() => 
-    "p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition",
-    []
-  );
-
   const fullscreenToggle = useCallback(() => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen()
@@ -141,7 +136,7 @@ const Panel = ({ wordcountToggle, timerToggle, inputAreaRef }:PanelProps) => {
           <button
             key={index}
             onClick={button.onClick}
-            className={buttonClassName}
+            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition"
             aria-label={button.ariaLabel}
             title={button.title}
           >

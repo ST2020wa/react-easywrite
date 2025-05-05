@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import './WordCount.css';
 
@@ -9,13 +9,8 @@ interface WordCountProps {
 const WordCount: React.FC<WordCountProps> = React.memo(({ count }) => {
   const { t } = useTranslation();
 
-  const containerClasses = useMemo(() => 
-    'word-count dark:bg-gray-700 rounded transition dark:text-gray-100',
-    []
-  );
-
   return (
-    <div className={containerClasses}>
+    <div className="word-count dark:bg-gray-700 rounded transition dark:text-gray-100">
       {count} {t('wordcountAmount.title')}
     </div>
   );

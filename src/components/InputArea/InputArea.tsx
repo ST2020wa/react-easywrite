@@ -6,7 +6,6 @@ import React, {
   useImperativeHandle,
   useRef,
   useCallback,
-  useMemo,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDeepFocus } from '../../hooks/useDeepFocus';
@@ -93,11 +92,6 @@ const InputArea = forwardRef<InputAreaRef, InputAreaProps>(({ showWordCount, sho
     getTextContent: () => text || '',
   }));
 
-  const textareaClassName = useMemo(() => 
-    "inputarea dark:bg-gray-700 rounded transition dark:text-gray-100",
-    []
-  );
-
   return (
     <div className='inputarea-container'>
       <textarea 
@@ -107,7 +101,7 @@ const InputArea = forwardRef<InputAreaRef, InputAreaProps>(({ showWordCount, sho
         onKeyDown={handleKeyDown}
         onMouseDown={handleMouseDown}
         placeholder={t('goForWrite.title')} 
-        className={textareaClassName}
+        className="inputarea dark:bg-gray-700 rounded transition dark:text-gray-100"
       />
       {showWordCount && <WordCount count={debouncedWordCount}/>}
       <div className={showTimer ? '' : 'hidden'}><Timer /></div>
