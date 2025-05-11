@@ -1,5 +1,14 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { RootState } from '../../store';
+import { 
+  setMinutes, 
+  startTimer, 
+  stopTimer, 
+  updateTimeLeft,
+  clearWarning 
+} from '../../store/slices/timerSlice';
 
 const MAX_MINUTES = 240;
 
@@ -10,21 +19,18 @@ const Timer = () => {
     3-some buttons are not dark in dark mode;
     */
   const { t } = useTranslation();
-  const [minutes, setMinutes] = useState(25);
-  const [timeLeft, setTimeLeft] = useState(25 * 60);
-  const [isRunning, setIsRunning] = useState(false);
-  const [showWarning, setShowWarning] = useState(false);
+  const dispatch = useDispatch();
+  const { minutes, timeLeft, isRunning, showWarning } = useSelector((state: RootState) => state.timer);
   const frameRef = useRef<number | undefined>(undefined);
   const lastTimeRef = useRef<number>(0);
+  const [showTimeUpDialog, setShowTimeUpDialog] = useState(false);
 
   const validateTime = (val: number) => {
     if (val > MAX_MINUTES) {
-      setShowWarning(true);
-      return MAX_MINUTES;
-    } else {
-      setShowWarning(false);
-      return val;
+      dispatch(setMinutes(MAX_MINUTES));
+      return;
     }
+    dispatch(setMinutes(val));
   };
 
   const updateTime = useCallback((now: number) => {
@@ -32,34 +38,38 @@ const Timer = () => {
     const delta = now - lastTimeRef.current;
 
     if (delta >= 1000) {
-      setTimeLeft(prev => {
-        const updated = prev - Math.floor(delta / 1000);
-        if (updated <= 0) {
-          stop();
-          alert(t('timer.timeUp', 'Time is up! Take a break.'));
-          return 0;
+      const updated = timeLeft - Math.floor(delta / 1000);
+      if (updated <= 0) {
+        dispatch(stopTimer());
+        dispatch(updateTimeLeft(0));
+        if (!showTimeUpDialog) {
+          setShowTimeUpDialog(true);
+          setTimeout(() => {
+            alert(t('timer.timeUp', 'Time is up! Take a break.'));
+            setShowTimeUpDialog(false);
+          }, 100);
         }
-        return updated;
-      });
+        return;
+      }
+      dispatch(updateTimeLeft(updated));
       lastTimeRef.current = now;
     }
 
     frameRef.current = requestAnimationFrame(updateTime);
-  }, [t]);
+  }, [timeLeft, dispatch, t, showTimeUpDialog]);
 
   const start = () => {
     if(!minutes){
       alert(t('timer.minTimeWarning', 'Time should be at least 1 minute.🤔'));
       return;
     }
-    setTimeLeft(minutes * 60);
-    setIsRunning(true);
+    dispatch(startTimer());
     lastTimeRef.current = 0; // Reset the last time to ensure accurate timing
     frameRef.current = requestAnimationFrame(updateTime);
   };
 
   const stop = () => {
-    setIsRunning(false);
+    dispatch(stopTimer());
     if (frameRef.current) cancelAnimationFrame(frameRef.current);
   };
 
@@ -84,11 +94,7 @@ const Timer = () => {
             min={1}
             max={MAX_MINUTES}
             value={minutes}
-            onChange={(e) => {
-              const val = validateTime(Number(e.target.value));
-              setMinutes(val);
-              setTimeLeft(val * 60);
-            }}
+            onChange={(e) => validateTime(Number(e.target.value))}
             className="w-16 px-2 py-1 rounded bg-gray-100 dark:bg-gray-700 border-none mr-2 text-center text-black dark:text-white"
           />
           {t('timer.minutes', 'minutes')}

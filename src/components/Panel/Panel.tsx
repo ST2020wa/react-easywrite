@@ -1,13 +1,18 @@
 import React, { useCallback, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import './Panel.css';
 import { useTranslation } from 'react-i18next';
-import { useDeepFocus } from '../../hooks/useDeepFocus';
-import useDarkMode from '../../hooks/useDarkMode';
 import DeleteConfirmModal from '../DeleteConfirmModal/DeleteConfirmModal';
+import { RootState } from '../../store';
+import { 
+  toggleWordCount, 
+  toggleTimer, 
+  toggleDarkMode, 
+  toggleDeepFocus 
+} from '../../store/slices/settingsSlice';
+import { clearText } from '../../store/slices/textSlice';
 
 interface PanelProps {
-  wordcountToggle: () => void;
-  timerToggle: () => void;
   inputAreaRef: React.RefObject<{getTextContent: () => string} | null>;
 }
 
@@ -18,10 +23,10 @@ interface ButtonConfig {
   icon: string;
 }
 
-const Panel = ({ wordcountToggle, timerToggle, inputAreaRef }:PanelProps) => {
+const Panel = ({ inputAreaRef }: PanelProps) => {
   const { t, i18n } = useTranslation();
-  const { darkMode, toggleDarkMode } = useDarkMode();
-  const { deepFocus, toggleDeepFocus } = useDeepFocus();
+  const dispatch = useDispatch();
+  const { darkMode, deepFocus } = useSelector((state: RootState) => state.settings);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const fullscreenToggle = useCallback(() => {
@@ -53,11 +58,10 @@ const Panel = ({ wordcountToggle, timerToggle, inputAreaRef }:PanelProps) => {
   }, []);
 
   const confirmDelete = useCallback(() => {
-    localStorage.setItem('textInput', '');
-    inputAreaRef.current?.getTextContent();
+    dispatch(clearText());
     setShowDeleteConfirm(false);
     window.location.reload();
-  }, [inputAreaRef]);
+  }, [dispatch]);
 
   const cancelDelete = useCallback(() => {
     setShowDeleteConfirm(false);
@@ -76,7 +80,7 @@ const Panel = ({ wordcountToggle, timerToggle, inputAreaRef }:PanelProps) => {
       icon: '🔲'
     },
     {
-      onClick: toggleDarkMode,
+      onClick: () => dispatch(toggleDarkMode()),
       ariaLabel: t('darkMode.ariaLabel'),
       title: t('darkMode.title'),
       icon: '🌓'
@@ -88,13 +92,13 @@ const Panel = ({ wordcountToggle, timerToggle, inputAreaRef }:PanelProps) => {
       icon: '💾'
     },
     {
-      onClick: wordcountToggle,
+      onClick: () => dispatch(toggleWordCount()),
       ariaLabel: t('wordCount.ariaLabel'),
       title: t('wordCount.title'),
       icon: '📈'
     },
     {
-      onClick: timerToggle,
+      onClick: () => dispatch(toggleTimer()),
       ariaLabel: t('timer.ariaLabel'),
       title: t('timer.title'),
       icon: '⏳'
@@ -112,20 +116,17 @@ const Panel = ({ wordcountToggle, timerToggle, inputAreaRef }:PanelProps) => {
       icon: '🗑️'
     },
     {
-      onClick: toggleDeepFocus,
+      onClick: () => dispatch(toggleDeepFocus()),
       ariaLabel: t('deepFocus.ariaLabel'),
       title: t('deepFocus.title'),
       icon: '💡'
     }
   ], [
     fullscreenToggle,
-    toggleDarkMode,
     exportToFile,
-    wordcountToggle,
-    timerToggle,
     switchLanguage,
     deleteInput,
-    toggleDeepFocus,
+    dispatch,
     t
   ]);
 

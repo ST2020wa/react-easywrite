@@ -7,9 +7,10 @@ import React, {
   useRef,
   useCallback,
 } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { useDeepFocus } from '../../hooks/useDeepFocus';
-import useTextStorage from '../../hooks/useTextStorage';
+import { RootState } from '../../store';
+import { updateText } from '../../store/slices/textSlice';
 import useDebounce from '../../hooks/useDebounce';
 
 interface InputAreaProps {
@@ -23,8 +24,9 @@ interface InputAreaRef {
 
 const InputArea = forwardRef<InputAreaRef, InputAreaProps>(({ showWordCount, showTimer }, ref) => {
   const { t } = useTranslation();
-  const { text, wordCount, updateText } = useTextStorage();
-  const { deepFocus } = useDeepFocus();
+  const dispatch = useDispatch();
+  const { text, wordCount } = useSelector((state: RootState) => state.text);
+  const { deepFocus } = useSelector((state: RootState) => state.settings);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const debouncedWordCount = useDebounce(wordCount, 300);
 
@@ -47,16 +49,16 @@ const InputArea = forwardRef<InputAreaRef, InputAreaProps>(({ showWordCount, sho
       return;
     }
     
-    updateText(newText);
-  }, [text, updateText, t]);
+    dispatch(updateText(newText));
+  }, [text, dispatch, t]);
 
   const onInputChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (deepFocus) {
       handleDeepFocusInput(e);
     } else {
-      updateText(e.target.value);
+      dispatch(updateText(e.target.value));
     }
-  }, [deepFocus, handleDeepFocusInput, updateText]);
+  }, [deepFocus, handleDeepFocusInput, dispatch]);
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (!deepFocus) return;
