@@ -104,6 +104,7 @@ const InputArea = forwardRef<InputAreaRef, InputAreaProps>(({ showWordCount, sho
         className="inputarea dark:bg-gray-700 rounded transition dark:text-gray-100"
       />
       {showWordCount && <WordCount count={debouncedWordCount}/>}
+      {/* using tailwindCSS hidden because timer has state to maintain, using && will remove itself from DOM */}
       <div className={showTimer ? '' : 'hidden'}><Timer /></div>
     </div>
   );
